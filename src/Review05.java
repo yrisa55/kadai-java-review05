@@ -17,37 +17,37 @@ public class Review05 {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try {
             //  ドライバのクラスをJava上で読み込む
             Class.forName("com.mysql.cj.jdbc.Driver");
-            
+
             // DBと接続する
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost/kadaidb?useSSL=false&allowPublicKeyRetrieval=true",
                     "root",
                     "pw06100!"
                     );
-            
+
             // DBとやりとりする窓口(PreparedStatementオブジェクト)の作成
             String sql = "SELECT * FROM person where id = ?";
             pstmt = con.prepareStatement(sql);
-            
+
             // Select文の実行と結果を格納/代入
             System.out.print("検索キーワードを入力して下さい > ");
             String input = keyIn();
-            
-            // PreparedStatementオブジェクトの?に値をセット
-            pstmt.setString(1, input);
+
+            // 入力された文字列を数値に変換してPreparedStatementオブジェクトの?に値をセット
+            pstmt.setInt(1,Integer.parseInt(input));
             rs = pstmt.executeQuery();
-            
+
             // 結果を表示する
             while(rs.next()) {
                 // Name列の値を取得
                 String name = rs.getString("Name");
                 // age列の値を取得
                 int age = rs.getInt("age");
-                
+
                 // 取得した値を表示
                 System.out.println(name);
                 System.out.println(age);
@@ -87,17 +87,17 @@ public class Review05 {
         }
 
     }
-    
+
     /*
      *  キーボードから入力された値をStringで返す　引数：なし　戻り値：なし
-     */ 
+     */
      private static String keyIn() {
          String line = null;
          try {
              BufferedReader key = new BufferedReader(new InputStreamReader(System.in));
              line = key.readLine();
          } catch (IOException e) {
-             
+
          } return line;
      }
 }
